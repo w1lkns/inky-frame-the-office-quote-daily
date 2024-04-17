@@ -12,19 +12,20 @@ graphics = PicoGraphics(DISPLAY)
 WIDTH, HEIGHT = graphics.get_bounds()
 
 # Function to connect to the Wi-Fi
+    
 def connect_wifi():
     sta_if = network.WLAN(network.STA_IF)
-    if not sta_if.isconnected():
+    if not sta_if.isconnected():  # Check if already connected
         print('Connecting to network...')
-        inky_frame.led_wifi.on()  # Turn on WiFi LED to indicate network activity
+        inky_frame.led_wifi.on()
         sta_if.active(True)
         sta_if.connect(WIFI_SSID, WIFI_PASSWORD)
         while not sta_if.isconnected():
-            inky_frame.led_wifi.toggle()  # Blink LED during connection attempts
+            inky_frame.led_wifi.toggle()
             utime.sleep(0.5)
         inky_frame.led_wifi.off()
     print('Network config:', sta_if.ifconfig())
-    
+        
 def disconnect_wifi():
     sta_if = network.WLAN(network.STA_IF)
     if sta_if.isconnected():
@@ -32,7 +33,6 @@ def disconnect_wifi():
         sta_if.disconnect()
         sta_if.active(False)
         print('Disconnected.')
-        inky_frame.led_wifi.off()  # Ensure WiFi LED is off after disconnecting
 
 # Define colors using graphics.create_pen for clarity
 BLACK = graphics.create_pen(0, 0, 0)
@@ -70,6 +70,7 @@ def sanitize_text(text):
 
 def get_office_quote():
     gc.collect()
+    connect_wifi()
     try:
         response = urequest.urlopen("https://officeapi.akashrajpurohit.com/quote/random")
         raw_data = response.read()
@@ -140,7 +141,7 @@ def display_quote(quote, character):
     # Display the header
     graphics.set_pen(GOLD)
     graphics.rectangle(0, 0, WIDTH, 50)
-    header_text = "The Office - Quote of the Day"
+    header_text = "The Office"
     header_scale = determine_scale(header_text, WIDTH - 12, 5)  # Maintain dynamic scaling for the header
     graphics.set_pen(BLACK)
     graphics.text(header_text, (WIDTH - graphics.measure_text(header_text, scale=header_scale)) // 2, 10, WIDTH, header_scale)
@@ -160,27 +161,40 @@ def display_quote(quote, character):
     graphics.text(character, (WIDTH - graphics.measure_text(character, scale=char_scale)) // 2, character_y_position, WIDTH, char_scale)
 
     graphics.update()
+    
+def check_button(button):
+    if button.read():
+        utime.sleep(0.1)  # short delay to debounce
+        if button.read():
+            return True
+    return False
 
 def main():
     while True:
         ih.led_warn.on()  # Turn on the status LED when active
+        if check_button(ih.inky_frame.button_a):  # Make sure this function call is corrected
+            ih.inky_frame.button_a.led_on()
+            fetch_and_display_quote()  
+            ih.inky_frame.button_a.led_off()
+            utime.sleep(0.5)  # Debounce delay
+        ih.led_warn.off()
+        
         quote, character = get_office_quote()
         if quote and character:
+            gc.collect()
             display_quote(quote, character)
-            print(quote)            
-            
+            print(quote)
         else:
             print("Failed to fetch a quote, retrying in 10 seconds.")
-            utime.sleep(10)
-            
-        ih.led_warn.off()
-        disconnect_wifi()  #disconnects wifi connection
-        utime.sleep(7200)  # Update every 2 hours
+            utime.sleep(21600) # update 6 hours
+        
+        disconnect_wifi()  # Disconnects wifi connection
+        utime.sleep()  # Update every 2 hours
 
 if __name__ == "__main__":
     gc.collect()
-    connect_wifi()
     main()
+
     
 # In your loop or other long-running processes
 while True:
