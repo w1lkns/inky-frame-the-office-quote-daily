@@ -26,12 +26,14 @@ This project is designed to fetch and display quotes from "The Office" on an Ink
 ## Installation
 
 1. Clone this repository to your local machine or directly to your microcontroller:
-git clone https://github.com/yourusername/office-quote-display.git
+``` git clone https://github.com/w1lkns/office-quote-display.git ```
 2. Ensure all dependencies are installed and compatible with your microcontroller.
 3. Update the `secrets.py` with your Wi-Fi credentials:
 
+```
 WIFI_SSID = "yourSSID"
 WIFI_PASSWORD = "yourPassword"
+```
 
 ## Usage
 Once deployed and running, the device will:
