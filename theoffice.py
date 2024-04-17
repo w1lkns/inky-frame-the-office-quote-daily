@@ -38,6 +38,20 @@ def disconnect_wifi():
 BLACK = graphics.create_pen(0, 0, 0)
 WHITE = graphics.create_pen(255, 255, 255)
 GREY = graphics.create_pen(200, 200, 200)
+GOLD = graphics.create_pen(255, 215, 0)
+DARK_GREY = graphics.create_pen(50, 50, 50)
+LIGHT_GREY = graphics.create_pen(200, 200, 200)
+
+# Define the vertical positions and heights
+header_height = 50  # Height of the header
+footer_height = 50  # Height of the footer
+footer_start_y = HEIGHT - footer_height  # Start position of the footer
+
+# Calculate the starting Y position and height for the quote rectangle
+quote_start_y = header_height  # Just below the header
+quote_height = footer_start_y - header_height  # Stretch down to just above the footer
+
+
 
 def sanitize_text(text):
     replacements = {
@@ -124,17 +138,25 @@ def display_quote(quote, character):
     graphics.clear()
 
     # Display the header
+    graphics.set_pen(GOLD)
+    graphics.rectangle(0, 0, WIDTH, 50)
     header_text = "The Office - Quote of the Day"
-    header_scale = determine_scale(header_text, WIDTH - 20, 5)  # Maintain dynamic scaling for the header
+    header_scale = determine_scale(header_text, WIDTH - 12, 5)  # Maintain dynamic scaling for the header
     graphics.set_pen(BLACK)
     graphics.text(header_text, (WIDTH - graphics.measure_text(header_text, scale=header_scale)) // 2, 10, WIDTH, header_scale)
 
     # Display the quote using the revised wrapped text function
+    graphics.set_pen(WHITE)
+    graphics.rectangle(10, 60, WIDTH - 20, 100)  # You might adjust the height based on content
+    graphics.set_pen(DARK_GREY)
     quote_y_end = display_wrapped_text(quote, 10, 60, WIDTH - 20)
 
     # Display the character info
-    char_scale = determine_scale(character, WIDTH - 20, 4)  # Determine a suitable scale for the character name
-    character_y_position = HEIGHT - 50  # Adjust positioning as needed
+    character_y_position = HEIGHT - 50  # Adjust the vertical position based on your display's dimensions
+    graphics.set_pen(LIGHT_GREY)
+    graphics.rectangle(0, character_y_position - 5, WIDTH, 50)  # Background for character info
+    graphics.set_pen(BLACK)
+    char_scale = determine_scale(character, WIDTH - 20, 5)  # Determine a suitable scale for the character name
     graphics.text(character, (WIDTH - graphics.measure_text(character, scale=char_scale)) // 2, character_y_position, WIDTH, char_scale)
 
     graphics.update()
