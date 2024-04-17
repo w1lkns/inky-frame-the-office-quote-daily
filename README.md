@@ -58,7 +58,7 @@ This project is licensed under the MIT License
 
 ## Acknowledgments
 
-This project utilizes the "The Office" Quote API provided by Akash Rajpurohit. The API is freely available and offers a wide range of quotes from the television show "The Office". For more information about the API and to explore other projects, visit the [official API documentation](https://officeapi.akashrajpurohit.com/).
+This project utilizes the "The Office" Quote API created by Akash Rajpurohit. The API is freely available and offers a wide range of quotes from "The Office" (US version). For more information about the API and to explore other projects, visit the [official API documentation](https://officeapi.akashrajpurohit.com/).
 
 ### API Details
 
