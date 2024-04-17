@@ -35,12 +35,14 @@ GREY = graphics.create_pen(200, 200, 200)
 
 def sanitize_text(text):
     replacements = {
-        "’": "'",  # Replace curly apostrophes with straight ones
-        "“": '"',  # Replace left double quotation marks
-        "”": '"',  # Replace right double quotation marks
-        "…": "...",  # Replace ellipsis with three dots
-        "—": "-",  # Replace em-dash with a hyphen
-        "–": "-"   # Replace en-dash with a hyphen
+        "’": "'",	# Replace curly apostrophes with straight ones
+        "‘": "'",	# Replace back apostrophe with straigh ones (apparently, not the same as the above)
+        "“": '"',	# Replace left double quotation marks
+        "”": '"',	# Replace right double quotation marks
+        "…": "...",	# Replace ellipsis with three dots
+        "—": "-",	# Replace em-dash with a hyphen
+        "–": "-"	# Replace en-dash with a hyphen
+        
     }
     for find, replace in replacements.items():
         text = text.replace(find, replace)
@@ -142,7 +144,7 @@ def main():
             print("Failed to fetch a quote, retrying in 10 seconds.")
             utime.sleep(10)
             
-        disconnect_wifi()  # Disconnects wifi connection
+        disconnect_wifi()  #disconnects wifi connection
         utime.sleep(7200)  # Update every 2 hours
 
 if __name__ == "__main__":
