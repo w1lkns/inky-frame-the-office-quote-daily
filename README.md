@@ -4,7 +4,7 @@ This project is designed to fetch and display quotes from "The Office" on an Ink
 
 ## Features
 
-- **Automatic Quote Fetching**: Connects to "The Office" API and fetches a new quote every 2 hours.
+- **Automatic Quote Fetching**: Connects to "The Office" API and fetches a new quote every 6 hours.
 - **Wi-Fi Connectivity**: Manages Wi-Fi connections to fetch quotes and disconnects afterwards to conserve power.
 - **Text Sanitization**: Processes and sanitizes text to ensure compatibility with the Inky Frame display limitations.
 - **Error Handling**: Robust error handling to manage potential network issues or data errors.
@@ -28,7 +28,8 @@ This project is designed to fetch and display quotes from "The Office" on an Ink
 1. Clone this repository to your local machine or directly to your microcontroller:
 ``` git clone https://github.com/w1lkns/office-quote-display.git ```
 3. Ensure all dependencies are installed and compatible with your microcontroller.
-4. Update the `secrets.py` with your Wi-Fi credentials:
+4. Connect your microcontroller to your MicroPython editor - i.e -> Thonny
+5. Update the `secrets.py` with your Wi-Fi credentials:
 
 ```
 WIFI_SSID = "yourSSID"
