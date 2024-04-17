@@ -55,3 +55,31 @@ Open a new Pull Request.
 
 ## License
 This project is licensed under the MIT License
+
+## Acknowledgments
+
+This project utilizes the "The Office" Quote API provided by Akash Rajpurohit. The API is freely available and offers a wide range of quotes from the television show "The Office". For more information about the API and to explore other projects, visit the [official API documentation](https://officeapi.akashrajpurohit.com/).
+
+### API Details
+
+- **API Home**: [The Office API](https://officeapi.akashrajpurohit.com/)
+- **API Endpoint Used**: `https://officeapi.akashrajpurohit.com/quote/random`
+- **API Description**: This API endpoint provides random quotes from the TV show "The Office", which are used in this project to display on an Inky Frame via a Raspberry Pi Pico.
+
+## Using the API
+
+To use this API in your projects, you can make HTTP GET requests to the endpoint mentioned above. Here is an example of how to fetch data from the API:
+
+```python
+import urequest
+
+def fetch_office_quote():
+    url = "https://officeapi.akashrajpurohit.com/quote/random"
+    response = urequest.urlopen(url)
+    data = response.read()
+    return data
+
+quote_data = fetch_office_quote()
+print(quote_data)
+```
+
