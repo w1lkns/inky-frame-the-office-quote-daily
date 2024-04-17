@@ -3,6 +3,8 @@ import ujson
 from urllib import urequest
 from picographics import PicoGraphics, DISPLAY_INKY_FRAME as DISPLAY
 import utime
+import inky_helper as ih
+import inky_frame
 import network
 from secrets import WIFI_SSID, WIFI_PASSWORD
 
@@ -14,10 +16,13 @@ def connect_wifi():
     sta_if = network.WLAN(network.STA_IF)
     if not sta_if.isconnected():
         print('Connecting to network...')
+        inky_frame.led_wifi.on()  # Turn on WiFi LED to indicate network activity
         sta_if.active(True)
         sta_if.connect(WIFI_SSID, WIFI_PASSWORD)
         while not sta_if.isconnected():
-            pass
+            inky_frame.led_wifi.toggle()  # Blink LED during connection attempts
+            utime.sleep(0.5)
+        inky_frame.led_wifi.off()
     print('Network config:', sta_if.ifconfig())
     
 def disconnect_wifi():
@@ -27,6 +32,7 @@ def disconnect_wifi():
         sta_if.disconnect()
         sta_if.active(False)
         print('Disconnected.')
+        inky_frame.led_wifi.off()  # Ensure WiFi LED is off after disconnecting
 
 # Define colors using graphics.create_pen for clarity
 BLACK = graphics.create_pen(0, 0, 0)
@@ -135,6 +141,7 @@ def display_quote(quote, character):
 
 def main():
     while True:
+        ih.led_warn.on()  # Turn on the status LED when active
         quote, character = get_office_quote()
         if quote and character:
             display_quote(quote, character)
@@ -144,6 +151,7 @@ def main():
             print("Failed to fetch a quote, retrying in 10 seconds.")
             utime.sleep(10)
             
+        ih.led_warn.off()
         disconnect_wifi()  #disconnects wifi connection
         utime.sleep(7200)  # Update every 2 hours
 
@@ -151,3 +159,11 @@ if __name__ == "__main__":
     gc.collect()
     connect_wifi()
     main()
+    
+# In your loop or other long-running processes
+while True:
+    ih.led_warn.on()  # Indicate activity
+    ih.app.update()
+    ih.app.draw()
+    ih.led_warn.off()  # Turn off LED when waiting
+    ih.sleep(ih.app.UPDATE_INTERVAL)
